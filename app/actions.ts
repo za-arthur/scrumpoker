@@ -5,7 +5,7 @@ import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-const newSessionUser = async (supabase: SupabaseClient, sessionId: string) => {
+const newSessionUser = async (supabase, sessionId) => {
   const { error } = await supabase
     .from("session_users")
     .insert({ session_id: sessionId });
