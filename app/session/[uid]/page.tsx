@@ -32,7 +32,7 @@ export default function Page({ params }: { params: { uid: string } }) {
     { value: 89, variant: "outline" },
   ]);
 
-  const updateCardsRevealed = async (revealed: bool) => {
+  const updateCardsRevealed = async (revealed: boolean) => {
     const { error } = await supabase
       .from("sessions")
       .update({ cards_revealed: revealed })
