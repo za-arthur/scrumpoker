@@ -53,8 +53,9 @@ export default function Page({ params }: { params: { uid: string } }) {
       const {
         data: { user },
       } = await supabase.auth.getUser();
+      if (!user) throw new Error('no user')
 
-      setUserId(user.id);
+      setUserId(user?.id);
     }
     getUserId();
   }, [supabase]);
@@ -140,7 +141,7 @@ export default function Page({ params }: { params: { uid: string } }) {
 
   // Realtime subscriptions
 
-  const handleInserts = async (payload) => {
+  const handleInserts = async (payload: any) => {
     setSessionUsers([
       ...sessionUsers,
       {
@@ -151,7 +152,7 @@ export default function Page({ params }: { params: { uid: string } }) {
     ]);
   }
 
-  const handleUpdates = async (payload) => {
+  const handleUpdates = async (payload: any) => {
     console.log(payload);
     console.log("logged");
     if (payload.new.session_id != params.uid) {
@@ -178,7 +179,7 @@ export default function Page({ params }: { params: { uid: string } }) {
     .on("postgres_changes", { event: "UPDATE", schema: "public", table: "session_users" }, handleUpdates)
     .subscribe();
 
-  const handleSessionsUpdates = async (payload) => {
+  const handleSessionsUpdates = async (payload: any) => {
     setCardsRevealed(payload.new.cards_revealed);
   }
 
@@ -189,7 +190,7 @@ export default function Page({ params }: { params: { uid: string } }) {
 
   // Callbacks
 
-  const onCardClick = async (cardIdx, cardValue, cardVariant) => {
+  const onCardClick = async (cardIdx: number, cardValue: string, cardVariant: string) => {
     const newVote = (cardVariant == "outline") ? cardValue : null;
 
     const { error } = await supabase
